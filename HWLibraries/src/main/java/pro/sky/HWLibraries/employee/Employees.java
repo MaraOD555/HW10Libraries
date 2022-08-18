@@ -8,8 +8,9 @@ public class Employees {
     private final String lastName;
 
     public Employees(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = StringUtils.capitalize(firstName.toLowerCase()); //приводим к toLowerCase, чтобы если введено capslock
+        // или еще как то исключить и потом уже capitalize, метод который делает первую букву заглавной.
+        this.lastName = StringUtils.capitalize(lastName.toLowerCase());
 
     }
 
@@ -37,7 +38,7 @@ public class Employees {
 
     @Override
     public String toString() {
-        return "Имя сотрудника: " + StringUtils.capitalize(firstName) + ", " + " Фамилия сотрудника: " + StringUtils.capitalize(lastName);
+        return "Имя сотрудника: " + firstName + ", " + " Фамилия сотрудника: " + lastName;
     }
 }
 

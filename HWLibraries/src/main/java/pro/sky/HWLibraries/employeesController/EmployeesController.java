@@ -19,32 +19,22 @@ public class EmployeesController {
     @GetMapping("/add")
     public Employees addEmployee(@RequestParam ("firstName") String firstName,
                                  @RequestParam ("lastName") String lastName){
-         return employeesService.addEmployee(lastName, firstName); // вызываем метод
+         return employeesService.addEmployee(firstName, lastName);
      }
 
     @GetMapping("/remove")
     public Employees removeEmployee(@RequestParam ("firstName") String firstName,
                                     @RequestParam ("lastName") String lastName){
-        return employeesService.removeEmployee(lastName, firstName); // вызываем метод
+        return employeesService.removeEmployee(firstName, lastName);
        }
     @GetMapping("/find")
     public Employees findEmployee(@RequestParam ("firstName") String firstName,
                                   @RequestParam ("lastName") String lastName){
-        Employees employee = new Employees(firstName, lastName); //создаем объект внутри метода, передаем поля (конструктор)
-        return employeesService.findEmployee(employee); // вызываем метод
+        return employeesService.findEmployee(firstName, lastName);
        }
-    @GetMapping("/checking")
-    public String authorization(@RequestParam ("firstName") String firstName,
-                                @RequestParam ("lastName") String lastName) {
-        try {
-            return String.valueOf(EmployeesService.checkNames(firstName, lastName));
-        } catch (WrongNameException e) {
-            e.printStackTrace();
-            return "Недопустимое имя или фамилия!";
-            }
-    }
+
     @GetMapping
-    public String getAll(){ // список с методом
-       return employeesService.getAllEmployee(); // вызываем метод контроллера
+    public String getAll(){
+       return employeesService.getAllEmployee();
     }
 }

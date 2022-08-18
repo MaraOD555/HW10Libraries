@@ -12,6 +12,8 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import pro.sky.HWLibraries.exceptions.WrongNameException;
 
+import static org.apache.commons.lang3.StringUtils.isAlpha;
+
 @Service
 public class EmployeesService {
     List<Employees> employees = new ArrayList<>(List.of(
@@ -27,14 +29,8 @@ public class EmployeesService {
                 new Employees("Елена", "Михалева")
     ));
 
-    public static boolean checkNames (String firstName, String lastName){
-        if(!StringUtils.isAlpha(firstName)) {
-            throw new WrongNameException();
-        }
-        if (!StringUtils.isAlpha(lastName)) {
-            throw new WrongNameException();
-        }
-        return true;
+    private boolean checkNames (String firstName, String lastName){ //проверка имени и фамилии
+            return isAlpha(firstName) && isAlpha(lastName); // метод isAlpha
     }
     public Employees addEmployee(String firstName, String lastName) {
         Employees employee = new Employees(firstName, lastName);
@@ -42,7 +38,7 @@ public class EmployeesService {
             throw new EmployeeAlreadyAddedException();
         }
         if (!checkNames(firstName, lastName)) {
-            throw new WrongNameException();
+            throw new WrongNameException(); //создано новое испключение
         }
         if (employees.size() < 11) {
             employees.add(employee);
@@ -56,13 +52,20 @@ public class EmployeesService {
         if (!employees.contains(employee)){
             throw new EmployeeNotFoundException();
         }
+        if (!checkNames(firstName, lastName)) {
+            throw new WrongNameException(); //создано новое испключение
+        }
         employees.remove(employee);
         return employee;
     }
-    public Employees findEmployee(Employees employee) {
+    public Employees findEmployee(String firstName, String lastName) {
+        Employees employee = new Employees(firstName, lastName);
        if (!employees.contains(employee)){
            throw new EmployeeNotFoundException();
        }
+        if (!checkNames(firstName, lastName)) {
+            throw new WrongNameException(); //создано новое испключение
+        }
        return employee;
     }
     public String getAllEmployee() {
