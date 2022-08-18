@@ -9,32 +9,50 @@ import pro.sky.HWLibraries.exceptions.EmployeeStorageIsFullException;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import pro.sky.HWLibraries.exceptions.WrongNameException;
 
 @Service
 public class EmployeesService {
     List<Employees> employees = new ArrayList<>(List.of(
-                new Employees("Иван Иванович", "Иванов"),
-                new Employees("Иван Петрович", "Иванов"),
-                new Employees("Иван Иванович", "Сидоров"),
-                new Employees("Михаил Иванович", "Зверев"),
-                new Employees("Людмила Петровна", "Клюева"),
-                new Employees("Егор Александрович", "Иванов"),
-                new Employees("Сергей Сергеевич", "Кузнецов"),
-                new Employees("Сергей Валерьевич", "Клоков"),
-                new Employees("Светлана Игоревна", "Куркова"),
-                new Employees("Елена Александровна", "Михалева")
+                new Employees("Иван", "Иванов"),
+                new Employees("Яков", "Иванов"),
+                new Employees("Иван", "Сидоров"),
+                new Employees("Михаил", "Зверев"),
+                new Employees("Людмила", "Клюева"),
+                new Employees("Егор", "Иванов"),
+                new Employees("Сергей", "Кузнецов"),
+                new Employees("Сергей", "Клоков"),
+                new Employees("Светлана", "Куркова"),
+                new Employees("Елена", "Михалева")
     ));
-    public Employees addEmployee(Employees employee) {
-        if (employees.contains(employee)){
+
+    public static boolean checkNames (String firstName, String lastName){
+        if(!StringUtils.isAlpha(firstName)) {
+            throw new WrongNameException();
+        }
+        if (!StringUtils.isAlpha(lastName)) {
+            throw new WrongNameException();
+        }
+        return true;
+    }
+    public Employees addEmployee(String firstName, String lastName) {
+        Employees employee = new Employees(firstName, lastName);
+        if (employees.contains(employee)) {
             throw new EmployeeAlreadyAddedException();
         }
-        if (employees.size() < 11){
-            employees.add(employee);
-            return employee;
+        if (!checkNames(firstName, lastName)) {
+            throw new WrongNameException();
         }
-        throw new EmployeeStorageIsFullException();
+        if (employees.size() < 11) {
+            employees.add(employee);
+        } else {
+            throw new EmployeeStorageIsFullException();
+        }
+        return employee;
     }
-    public Employees removeEmployee(Employees employee) {
+    public Employees removeEmployee(String firstName, String lastName) {
+        Employees employee = new Employees(firstName, lastName);
         if (!employees.contains(employee)){
             throw new EmployeeNotFoundException();
         }
@@ -47,10 +65,9 @@ public class EmployeesService {
        }
        return employee;
     }
-    public List <Employees> getAll() { // создается список со стандартным методом getAll()
-        //return employees.toString(); // если выводить список в формате заданном в
-        // toString(метод public String getAllEmployee) например.
-        return new ArrayList<>(employees); //возвращаем списочный массив
+    public String getAllEmployee() {
+        return employees.toString();
+
     }
 
 

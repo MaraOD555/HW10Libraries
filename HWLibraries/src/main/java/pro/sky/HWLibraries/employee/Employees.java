@@ -1,4 +1,5 @@
 package pro.sky.HWLibraries.employee;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
@@ -36,10 +37,9 @@ public class Employees {
 
     @Override
     public String toString() {
-        return "Имя сотрудника: " + firstName + ", " + " Фамилия сотрудника: " + lastName;
+        return "Имя сотрудника: " + StringUtils.capitalize(firstName) + ", " + " Фамилия сотрудника: " + StringUtils.capitalize(lastName);
     }
-//   public void add(Employees employee) {
-    }
+}
 
 
 
